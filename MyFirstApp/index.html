@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<HTML>
+      <HEAD>
+            <TITLE>Mi Primer Pryecto</TITLE>
+             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+            <link rel="stylesheet" type="text/css" href="css/themes/default/jquery.mobile-1.3.0.css"/>
+            
+            <script type="text/javascript" src="js/jquery.js"></script>
+            <script type="text/javascript" src="js/jquery.mobile-1.3.0.js"></script>
+      </HEAD>
+      <BODY>
+      
+      
+            <div data-role="page">
+                 <div data-role="header" data-position="fixed" data-fullscreen="false" data-theme="d">
+                      <h1>Mi Primer Proyecto</h1>
+                 </div>
+                 <div data-role="content">
+                      <div data-role="controlgroup" data-type="horizontal">
+                           <a href="#buttons" data-role="button">Buttons</a>
+                           <a href="#forms" data-role="button">Forms</a>
+                           <a href="#listviews" data-role="button">Listviews</a>
+                      </div>
+                      <div data-role="controlgroup">
+                           <a href="#dialogs" data-role="button">Dialogs</a>
+                           <a href="#panels" data-role="button">Panels</a>
+                      </div>
+                 </div>
+                 <div data-role="footer" data-position="fixed" data-fullscreen="false" data-theme="b">
+                      <h2>footer</h2>
+                 </div>
+            </div>
+            
+            
+            <div data-role="page" id="buttons">
+                 <div data-role="header" data-position="fixed" data-fullscreen="false" data-theme="d">
+                      <h1>Botones</h1>
+                      <a href="#" class="ui-btn-right" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext"></a>
+                 </div>
+                 <div data-role="content">
+                      <a href="#" data-role="button" data-mini="true">Boton 1</a>
+                      <button data-inline="true">Boton 2</button>
+                      <input data-inline="true" data-theme="b" type="submit" value="Boton 3"/>
+                      <input data-inline="true" type="button" value="Boton 4"/>
+                      <input type="button" data-icon="plus" value="Boton 5"/>
+                      <input type="button" data-icon="plus" data-iconpos="right" value="Boton 6"/>
+                      <input type="button" data-icon="plus" data-iconpos="notext" value="Boton 5"/>
+
+                 </div>
+                 <div data-role="footer" data-position="fixed" data-fullscreen="false" data-theme="b">
+                      <h2>footer</h2>
+                 </div>
+            </div>
+            
+            
+            <div data-role="page" id="forms" data-position="fixed">
+                 <div data-role="header" data-position="fixed" data-fullscreen="false" data-theme="d">
+                      <h1>Forms</h1>
+                      <a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext"></a>
+                 </div>
+                 <div data-role="content">
+                      <input data-type="range" value="0" min="0" max="100" step="5" data-highlight="true"/>
+                      <div data-role="rangeslider">
+                            <input data-type="range" value="0" min="0" max="100"  data-highlight="true"/>
+                            <input data-type="range" value="80" min="0" max="100" data-highlight="true"/>
+                      </div>
+                      <select data-role="slider" data-mini="false">
+                              <option value="off">Off</option>
+                              <option value="on" selected="selected">On</option>
+                      </select>
+                 </div>
+                 <div data-role="footer" data-position="fixed" data-fullscreen="false" data-theme="b">
+                      <h2>Footer</h2>
+                 </div>
+            </div>
+
+
+            <div data-role="page" id="  --Empty-- " style="display: none;">
+                 <div data-role="header" data-position="fixed" data-fullscreen="false" data-theme="d">
+                      <h1>EMPTY</h1>
+                 </div>
+                 <div data-role="content">
+                      EMPTY
+                 </div>
+                 <div data-role="footer" data-position="fixed" data-fullscreen="false" data-theme="b">
+                      <h2>EMPTY</h2>
+                 </div>
+            </div>
+            
+            
+      </BODY>
+</HTML>
