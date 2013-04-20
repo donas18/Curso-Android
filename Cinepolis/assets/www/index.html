@@ -17,6 +17,8 @@
         <script type="text/javascript" src="js/jquery.mobile-1.3.0.js"></script>
         <script type="text/javascript">
             app.initialize();
+
+            var ciudades;
             
             function loadMain(){
                   $.mobile.loading("show", {
@@ -28,21 +30,113 @@
                   $("#List_ciudades").children().remove("li");
                   
                   //Pedimos al servidor lista de ciudades y complejos
-                  $.ajax({
-                      type: "GET",
-                      url: "http://api.lesthack.com.mx/cinepolis/ciudades_complejos.json",
-                      async: false,
-                      jsonpCallback: "jsonCallback",
-                      contentType: "application/json",
-                      dataType: "jsonp",
-                      succes: function(data_json){
-                           console.log(data_json);
+                  $.ajax({ // CallBack necesaria para extraer la informacion necesaria para hacer la peticion de las ciudades y complejos
+                      type:"GET",
+                      url:"http://api.lesthack.com.mx/cinepolis/ciudades_complejos.json", //Direccion del servidor JSON
+                      async:false,
+                      jsonpCallback:"jsonCallback",
+                      contentType:"application/json",
+                      dataType:"jsonp",
+                      success: function(data_json){
+                           ciudades = data_json;
+                           for(var id_ciudad in ciudades){
+                                li_ciudad=$("<li/>"); //se crea un objeto con la propiedad list
+                                a_ciudad=$("<a/>",{ // se crea un objeto enlace con diferentes parametros
+                                  "href":"#complejos",
+                                  "alt": id_ciudad,
+                                  "text":ciudades[id_ciudad].nombre
+                                }).on("tap",function(event){
+                                    loadComplejos($(event.target).attr("alt"));
+                                    return false;
+                                });
+
+                                li_ciudad.append(a_ciudad);
+                                $("#List_ciudades").append(li_ciudad);
+                           }
+
+                           $("#List_ciudades").listview("refresh");
+                           $.mobile.loading("hide");
                       },
                       error: function(err){
                            console.log("Error: "+err);
                       }
                   });
             }
+
+            function loadComplejos(id_ciudad){ //loadComplejos no necesita hacer otra CallBack, ya que toda la inforacion la trae en ciudades
+                $("#list_complejos").children().remove("li");
+                complejos=ciudades[id_ciudad].complejos;
+
+                for(var i=0; i<complejos.length;i++){
+                    li_complejo=$("<li/>");
+                    a_complejo=$("<a/>", {
+                        "href":"#complejos",
+                        "alt": complejos[i].id,
+                        "text":complejos[i].complejo
+                    }).on("tap",function(event){
+                        loadCartelera($(event.target).attr("alt"));
+                        return false;
+                    });
+
+                    li_complejo.append(a_complejo);
+                    $("#list_complejos").append(li_complejo);
+                }
+
+                $.mobile.changePage($("#complejos"));
+                $("#list_complejos").listview("refresh");
+            }
+
+            function loadCartelera(id_complejo){ //Segunda CallBack para extraer la cartelera por complejo
+                $.mobile.loading({
+                  textVisible: false,
+                  theme: "a"
+                });
+
+                $("#list_films").children().remove("li");
+
+                $.ajax({
+                  type: "GET",
+                  url: "http://api.lesthack.com.mx/cinepolis/complejo_"+id_complejo+".json",
+                  async: false,
+                  jsonpCallback: "jsonCallback",
+                  contentType: "application/json",
+                  dataType: "jsonp",
+                  success: function(data_json){
+                        var filmes=data_json.filmes;
+                        for(var i=0; i<filmes.length;i++){
+                            var img_src="http://www.cinepolis.com.mx/Imagenes/Peliculas/"+filmes[i].nombre.split("-")[0].replace("DIG","").replace("IMAX","").replace("4DX","").replace("Dob","").replace("3D","").replace("Sub","").replace("Esp","")+"-cartel.jpg";
+                            li_filme=$("<li/>");
+                            a_filme=$("<a/>", {
+                              "href": filmes[i].link
+                        });
+
+                        img_filme=$film=$("<img/>",{
+                           "src": img_src
+                        });
+
+                        h2_filme=$("<h2/>",{
+                            "text": filmes[i].nombre
+                        });
+                        p_filme=$("<p/>",{
+                            "html": filmes[i].descripcion
+                        });
+
+                        a_filme.append(img_filme);
+                        a_filme.append(h2_filme);
+                        a_filme.append(p_filme);
+                        li_filme.append(a_filme);
+
+                        $("#list_films").append(li_filme);
+
+                        }
+
+                        $.mobile.changePage($("#cartelera"));
+                        $("#list_films").listview("refresh");
+                        $.mobile.loading("hide");
+
+                  }
+                })
+            } 
             
             $(function(){
                   $.mobile.changePage($("#ciudades"));
@@ -75,7 +169,7 @@
                     <a href="#" data-role="button" data-icon="back" data-iconpos="notext" data-rel="back" class="ui-btn-right">back</a>
                </div>
                <div data-role="content">
-                  <ul data-role="listview" data-inset="true" data-filter="true">
+                  <ul data-role="listview" data-inset="true" data-filter="true" id="list_complejos">
                       <li><a href="#cartelera">Complejo 1</a></li>
                       <li><a href="#cartelera">Complejo 2</a></li>
                   </ul>
@@ -92,7 +186,7 @@
                     <a href="#" data-role="button" data-icon="back" data-iconpos="notext" data-rel="back" class="ui-btn-right">back</a>
                </div>
                <div data-role="content">
-                  <ul data-role="listview" data-inset="true" data-filter="true">
+                  <ul data-role="listview" data-inset="true" data-filter="true" id="list_films">
                       <li>
                           <a href="#">
                              <img src="img/cordova.png" />
@@ -115,4 +209,3 @@
           </div>
     </body>
 </html>
-
